@@ -42,8 +42,10 @@ function update() {
 	renderer.render( scene, camera );
 
   //Rotate box by x,y
-
   box.rotation.x += 0.1/5
   box.rotation.y += 0.1/10
+
+  document.onclick = (ev: MouseEvent) => camera.position.z += 3
+
 }
 update();
