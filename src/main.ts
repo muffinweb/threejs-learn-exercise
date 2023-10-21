@@ -1,63 +1,57 @@
-// Import and renaming as main component variable that helps reach core stuff
-import * as THREE from 'three'
+import * as THREE from "three"
+import { SimpleInitializer } from "./SimpleInitializer";
 
-//set Width, Height values dependent on window.* values
-const width = window.innerWidth
-const height = window.innerHeight
+const initialConfig = {
+  widthCanvas: 800,
+  heightCanvas: 450,
+  fov: 60,
+  near: 0.1,
+  far: 100,
+  rendererDOM: 'app'
+}
 
-let zoomToggle = true;
+const threeInstance = SimpleInitializer(initialConfig)
 
-//Initial WEBGL Renderer
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.getElementById('app') as HTMLCanvasElement
+let sourcesByInstance = await threeInstance.start(sources => {
+          
+          //Geometry object + material = Meshable Object which is X Object
+          const boxGeometry = new THREE.BoxGeometry()
+          const material = new THREE.MeshPhongMaterial({color: 0xFFAD00})
+          const box = new THREE.Mesh(boxGeometry, material)
+
+          //Add box object to resources to handle this in update-Function
+          sources.resourceObjects.set('box', box)
+          
+          //Setting up position
+          box.position.z = -5
+          box.position.y = 1
+          sources.scene.add(box)
+      
+      
+          //Create Light Component and set its position then add it to scene
+          const light = new THREE.DirectionalLight(0xFFFFFF)
+          light.position.set(0, 0, 2)
+          sources.scene.add(light)
 })
 
-// Set Renderer's Size
-renderer.setSize(width, height)
+threeInstance.update(sourcesByInstance, () => {
 
-// Create Camera with PerspectiveCamera which takes 4 args
-// 1=Camera Frustum Verticel Field - Half Life Fov Setting
-// 2=Aspect Ratio 
-// 3= Min Distance Limit to show up objects on scene
-// 4= Max Distance Limit to show up objects on scene
-const camera = new THREE.PerspectiveCamera(60, width/height, 0.1, 100)
-
-// Create new Scene
-const scene = new THREE.Scene()
-
-const boxGeometry = new THREE.BoxGeometry()
-const material = new THREE.MeshPhongMaterial({color: 0xFFAD00})
-
-const box = new THREE.Mesh(boxGeometry, material)
-box.position.z = -5
-box.position.y = 1
-scene.add(box)
-
-const light = new THREE.DirectionalLight(0xFFFFFF)
-
-light.position.set(0, 0, 2)
-
-scene.add(light)
-
-function update() {
-	requestAnimationFrame( update );
-	renderer.render( scene, camera );
-
-  //Rotate box by x,y
-  box.rotation.x += 0.1/5
-  box.rotation.y += 0.1/10
+  //sourcesByInstance.camera.position.z += 0.1
+  let box = sourcesByInstance.resourceObjects.get('box')
+  box.rotation.x -= 0.01
+  box.rotation.y -= 0.01
 
   document.onclick = (ev: MouseEvent) => toggleZoomInOut()
 
-}
-update();
+})
 
+let zoomToggle = true
 function toggleZoomInOut(){
   
   if(zoomToggle){
-    camera.position.z += 3;
+    sourcesByInstance.camera.position.z += 3;
   }else{
-    camera.position.z -= 3;
+    sourcesByInstance.camera.position.z -= 3;
   }
 
   zoomToggle = !zoomToggle
