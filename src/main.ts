@@ -5,6 +5,8 @@ import * as THREE from 'three'
 const width = window.innerWidth
 const height = window.innerHeight
 
+let zoomToggle = true;
+
 //Initial WEBGL Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas: document.getElementById('app') as HTMLCanvasElement
@@ -45,7 +47,18 @@ function update() {
   box.rotation.x += 0.1/5
   box.rotation.y += 0.1/10
 
-  document.onclick = (ev: MouseEvent) => camera.position.z += 3
+  document.onclick = (ev: MouseEvent) => toggleZoomInOut()
 
 }
 update();
+
+function toggleZoomInOut(){
+  
+  if(zoomToggle){
+    camera.position.z += 3;
+  }else{
+    camera.position.z -= 3;
+  }
+
+  zoomToggle = !zoomToggle
+}
