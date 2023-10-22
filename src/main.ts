@@ -12,13 +12,13 @@ const initialConfig = {
 
 const threeInstance = SimpleInitializer(initialConfig)
 
-let sourcesByInstance = await threeInstance.start(sources => {
+let sourcesByInstance = await threeInstance.start((sources: { camera: { position: { set: (arg0: number, arg1: number, arg2: number) => void; }; lookAt: (arg0: number, arg1: number, arg2: number) => void; }; resourceObjects: { set: (arg0: string, arg1: THREE.Mesh<THREE.BoxGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> | THREE.Line<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.LineBasicMaterial>) => void; }; scene: { add: (arg0: THREE.Mesh<THREE.BoxGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> | THREE.DirectionalLight | THREE.Line<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.LineBasicMaterial>) => void; }; }) => {
           sources.camera.position.set( 0, 0, 0 );
           sources.camera.lookAt( 0, 0, 0 );
   
           //Geometry object + material = Meshable Object which is X Object
           const boxGeometry = new THREE.BoxGeometry()
-          const material = new THREE.MeshPhongMaterial({color: 0xFFAD00})
+          const material = new THREE.MeshPhongMaterial({color: "#FFAD00"})
           const box = new THREE.Mesh(boxGeometry, material)
 
           //Add box object to resources to handle this in update-Function
@@ -35,7 +35,7 @@ let sourcesByInstance = await threeInstance.start(sources => {
           //Let's create a line
 
           //Create material that will be used for line
-          const lineMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF })
+          const lineMaterial = new THREE.LineBasicMaterial({ color: "#FFFFFF" })
 
           // Now create custom vectorSet to make geomery
           const points = [];
@@ -56,34 +56,60 @@ let sourcesByInstance = await threeInstance.start(sources => {
         })
 
 //Action variables
-let spinningMode = true
+let spinningMode = true;
+let manuelCamMode = true;
+let boxColor = '#FFAD00';
 
-window.document.querySelector('#toggleSpin').onclick = () => {
+(<HTMLButtonElement>window.document.querySelector('#toggleSpin')).onclick = () => {
   spinningMode = !spinningMode
 }
 
-window.document.querySelector('#cameraZoomIn').onclick = () => {
+(<HTMLButtonElement>window.document.querySelector('#cameraZoomIn')).onclick = () => {
+  manuelCamMode = false
   sourcesByInstance.camera.position.z -= 1;
 }
 
-window.document.querySelector('#cameraZoomOut').onclick = () => {
+(<HTMLButtonElement>window.document.querySelector('#cameraZoomOut')).onclick = () => {
+  manuelCamMode = false
   sourcesByInstance.camera.position.z += 1;
 }
+
+(<HTMLButtonElement>window.document.getElementById('cameraPositionX')).onchange = () => {
+  manuelCamMode = true
+}
+
+//Color Changing
+(<HTMLInputElement>window.document.getElementById('colorPalette')).onchange = (ev: Event) => {
+  let selectedColor = (<HTMLInputElement>ev.target).value;
+  boxColor = selectedColor
+}
+
+
+
+
 
 //Update each-Frame Method
 threeInstance.update(sourcesByInstance, () => {
 
   //sourcesByInstance.camera.position.z += 0.1
+  let box = sourcesByInstance.resourceObjects.get('box')
   if(spinningMode){
-    let box = sourcesByInstance.resourceObjects.get('box')
     box.rotation.x -= 0.01
     box.rotation.y -= 0.01
   }
+  box.material.color.set(boxColor)
 
-  let cameraPositionX = document.getElementById('cameraPositionX')?.value
-  let cameraPositionY = document.getElementById('cameraPositionY')?.value
-  let cameraPositionZ = document.getElementById('cameraPositionZ')?.value
+  let cameraPositionX = (<HTMLInputElement>document.getElementById('cameraPositionX'))?.value
+  let cameraPositionY = (<HTMLInputElement>document.getElementById('cameraPositionY'))?.value
+  let cameraPositionZ = (<HTMLInputElement>document.getElementById('cameraPositionZ'))?.value
 
-  sourcesByInstance.camera.position.set(cameraPositionX, cameraPositionY, cameraPositionZ)
+  document.getElementById('boxColor')
+
+  if(manuelCamMode){
+    sourcesByInstance.camera.position.set(
+      Number(cameraPositionX), 
+      Number(cameraPositionY), 
+      Number(cameraPositionZ))
+  }
 
 })

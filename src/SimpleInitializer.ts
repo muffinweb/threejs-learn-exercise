@@ -51,7 +51,7 @@ const SimpleInitializer = (initialConfig: {
                     camera: THREE.PerspectiveCamera;
                     scene: THREE.Scene;
                     renderer: THREE.WebGLRenderer;
-        }, callback: CallableFunction ) => {
+        }, callback: FrameRequestCallback ) => {
 
             //Framer
             const FrameInterval = setInterval(() => {
