@@ -1,20 +1,21 @@
 import * as THREE from "three"
 import { SimpleInitializer } from "./SimpleInitializer";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const initialConfig = {
   widthCanvas: 800,
   heightCanvas: 450,
   fov: 60,
   near: 0.1,
-  far: 100,
+  far: 1000,
   rendererDOM: 'app'
 }
 
 const threeInstance = SimpleInitializer(initialConfig)
 
 let sourcesByInstance = await threeInstance.start((sources: any) => {
-          sources.camera.position.set( 0, 0, 0 );
-          sources.camera.lookAt( 0, 0, 0 );
+
+        
   
           //Geometry object + material = Meshable Object which is X Object
           const boxGeometry = new THREE.BoxGeometry()
@@ -72,18 +73,17 @@ let sourcesByInstance = await threeInstance.start((sources: any) => {
           //Let's create an Axes
 
           const axesHelper = new THREE.AxesHelper(5)
+          axesHelper.position.z = -4
 
           // Now add it to the scene
-
           sources.scene.add( axesHelper )
-
 
         })
 
 //Action variables
-let spinningMode = true;   
+let spinningMode = true;
+let camMode = true; 
 
-let manuelCamMode = true;
 let boxColor = '#FFAD00';
 
 (<HTMLButtonElement>window.document.querySelector('#toggleSpin')).onclick = () => {
@@ -91,17 +91,13 @@ let boxColor = '#FFAD00';
 }
 
 (<HTMLButtonElement>window.document.querySelector('#cameraZoomIn')).onclick = () => {
-  manuelCamMode = false
+ 
   sourcesByInstance.camera.position.z -= 1;
 }
 
 (<HTMLButtonElement>window.document.querySelector('#cameraZoomOut')).onclick = () => {
-  manuelCamMode = false
+  
   sourcesByInstance.camera.position.z += 1;
-}
-
-(<HTMLButtonElement>window.document.getElementById('cameraPositionX')).onchange = () => {
-  manuelCamMode = true
 }
 
 //Color Changing
@@ -109,6 +105,13 @@ let boxColor = '#FFAD00';
   let selectedColor = (<HTMLInputElement>ev.target).value;
   boxColor = selectedColor
 }
+
+(<HTMLButtonElement>document.querySelector('#activateOrbit')).addEventListener('click', ev => {
+  const orbits = new OrbitControls(sourcesByInstance.camera, sourcesByInstance.renderer.domElement)
+  if(orbits.update()){
+    alert('Orbit controls activated');
+  }
+})
 
 
 
@@ -128,17 +131,5 @@ let spinSpeed = (<HTMLInputElement>window.document.getElementById('spinSpeed'))?
   }
   box.material.color.set(boxColor)
 
-  let cameraPositionX = (<HTMLInputElement>document.getElementById('cameraPositionX'))?.value
-  let cameraPositionY = (<HTMLInputElement>document.getElementById('cameraPositionY'))?.value
-  let cameraPositionZ = (<HTMLInputElement>document.getElementById('cameraPositionZ'))?.value
-
   document.getElementById('boxColor')
-
-  if(manuelCamMode){
-    sourcesByInstance.camera.position.set(
-      Number(cameraPositionX), 
-      Number(cameraPositionY), 
-      Number(cameraPositionZ))
-  }
-
 })

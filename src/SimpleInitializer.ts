@@ -3,6 +3,7 @@
  */
 
 import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const SimpleInitializer = (initialConfig: {
     widthCanvas: number,
@@ -36,6 +37,9 @@ const SimpleInitializer = (initialConfig: {
             // 3= Min Distance Limit to show up objects on scene
             // 4= Max Distance Limit to show up objects on scene
             const camera = await new THREE.PerspectiveCamera(50, width/height, initialConfig.near, initialConfig.far)
+            camera.position.set(0,0,5)
+
+            
         
             // Create new Scene
             const scene = await new THREE.Scene()
