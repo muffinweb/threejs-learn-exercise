@@ -57,7 +57,7 @@ const SimpleInitializer = (initialConfig: {
             const FrameInterval = setInterval(() => {
                 requestAnimationFrame( callback );
                 sourcesByInstance.renderer.render( sourcesByInstance.scene, sourcesByInstance.camera );
-            },1000)
+            },60)
 
         }
     }

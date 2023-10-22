@@ -6,21 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
     <style>
-      html,body{
-        margin:0;
-        height: 100%;
-        text-align:center;
-      }
-
       #app{
         width: 800px;
         height: 450px;
         display: block;
       }
+
+      #controlpanel{
+        margin-top:5px;
+        width: 800px;
+        height: 100px;
+        background-color: #c5c5c5;
+        display: block;
+        border-radius: 5px;
+      }
+
+      table, tr,td {
+        border:1px solid black;
+        border-collapse: collapse;
+        padding:5px;
+      }
     </style>
   </head>
   <body>
-    <canvas id="app"></div>
+    <canvas id="app"></canvas>
+    <div id="controlpanel">
+      <table>
+        <tr>
+          <td>Toggle Spinning</td>
+          <td><button id="toggleSpin" >Toggle Spin</button></td>
+        </tr>
+        <tr>
+          <td>Camera Zoom In</td>
+          <td><button style="width: 84px" id="cameraZoomIn">+</button></td>
+        </tr>
+        <tr>
+          <td>Camera Zoom Out</td>
+          <td><button style="width: 84px" id="cameraZoomOut">-</button></td>
+        </tr>
+      </table>
+
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
