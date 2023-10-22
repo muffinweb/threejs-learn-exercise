@@ -12,7 +12,7 @@ const initialConfig = {
 
 const threeInstance = SimpleInitializer(initialConfig)
 
-let sourcesByInstance = await threeInstance.start((sources: { camera: { position: { set: (arg0: number, arg1: number, arg2: number) => void; }; lookAt: (arg0: number, arg1: number, arg2: number) => void; }; resourceObjects: { set: (arg0: string, arg1: THREE.Mesh<THREE.BoxGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> | THREE.Line<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.LineBasicMaterial>) => void; }; scene: { add: (arg0: THREE.Mesh<THREE.BoxGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> | THREE.DirectionalLight | THREE.Line<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.LineBasicMaterial>) => void; }; }) => {
+let sourcesByInstance = await threeInstance.start((sources: any) => {
           sources.camera.position.set( 0, 0, 0 );
           sources.camera.lookAt( 0, 0, 0 );
   
@@ -68,6 +68,15 @@ let sourcesByInstance = await threeInstance.start((sources: { camera: { position
           sources.resourceObjects.set('rLine', rLine);
 
           sources.scene.add(rLine);
+
+          //Let's create an Axes
+
+          const axesHelper = new THREE.AxesHelper(5)
+
+          // Now add it to the scene
+
+          sources.scene.add( axesHelper )
+
 
         })
 
