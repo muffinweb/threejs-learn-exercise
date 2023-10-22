@@ -53,10 +53,27 @@ let sourcesByInstance = await threeInstance.start((sources: { camera: { position
           sources.resourceObjects.set('line', line)
 
           sources.scene.add(line)
+
+          // ADD REVERSE LINE
+          const rLineMaterial = new THREE.LineBasicMaterial({color: "#FFFFFF"})
+          const rLinePoints = [];
+          rLinePoints.push(new THREE.Vector3(-3, 0, -10));
+          rLinePoints.push(new THREE.Vector3(0, -3, -10));
+          rLinePoints.push(new THREE.Vector3(3, 0, -10));
+
+          const rLineGeometry = new THREE.BufferGeometry().setFromPoints(rLinePoints)
+
+          const rLine = new THREE.Line(rLineGeometry, rLineMaterial);
+
+          sources.resourceObjects.set('rLine', rLine);
+
+          sources.scene.add(rLine);
+
         })
 
 //Action variables
-let spinningMode = true;
+let spinningMode = true;   
+
 let manuelCamMode = true;
 let boxColor = '#FFAD00';
 
@@ -91,11 +108,14 @@ let boxColor = '#FFAD00';
 //Update each-Frame Method
 threeInstance.update(sourcesByInstance, () => {
 
+  //Get Speed Value From customMade Editor
+let spinSpeed = (<HTMLInputElement>window.document.getElementById('spinSpeed'))?.value as unknown as number;
+
   //sourcesByInstance.camera.position.z += 0.1
   let box = sourcesByInstance.resourceObjects.get('box')
   if(spinningMode){
-    box.rotation.x -= 0.01
-    box.rotation.y -= 0.01
+    box.rotation.x -= (spinSpeed/100)
+    box.rotation.y -= (spinSpeed/100)
   }
   box.material.color.set(boxColor)
 
