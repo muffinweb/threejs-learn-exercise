@@ -70,6 +70,7 @@ window.document.querySelector('#cameraZoomOut').onclick = () => {
   sourcesByInstance.camera.position.z += 1;
 }
 
+//Update each-Frame Method
 threeInstance.update(sourcesByInstance, () => {
 
   //sourcesByInstance.camera.position.z += 0.1
@@ -78,4 +79,11 @@ threeInstance.update(sourcesByInstance, () => {
     box.rotation.x -= 0.01
     box.rotation.y -= 0.01
   }
+
+  let cameraPositionX = document.getElementById('cameraPositionX')?.value
+  let cameraPositionY = document.getElementById('cameraPositionY')?.value
+  let cameraPositionZ = document.getElementById('cameraPositionZ')?.value
+
+  sourcesByInstance.camera.position.set(cameraPositionX, cameraPositionY, cameraPositionZ)
+
 })

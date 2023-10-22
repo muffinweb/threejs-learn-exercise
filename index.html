@@ -15,7 +15,7 @@
       #controlpanel{
         margin-top:5px;
         width: 800px;
-        height: 100px;
+        height: 120px;
         background-color: #c5c5c5;
         display: block;
         border-radius: 5px;
@@ -25,6 +25,10 @@
         border:1px solid black;
         border-collapse: collapse;
         padding:5px;
+      }
+
+      table{
+        display: inline-block;
       }
     </style>
   </head>
@@ -43,6 +47,26 @@
         <tr>
           <td>Camera Zoom Out</td>
           <td><button style="width: 84px" id="cameraZoomOut">-</button></td>
+        </tr>
+      </table>
+
+
+      <table>
+        <tr>
+          <td>Camera Position</td>
+          <td>
+            <input type="number" name="" id="cameraPositionX" style="display: inline;width:35px" value="0">
+            <input type="number" name="" id="cameraPositionY" style="display: inline;width:35px" value="0">
+            <input type="number" name="" id="cameraPositionZ" style="display: inline;width:35px" value="0">
+          </td>
+        </tr>
+        <tr>
+          <td>Another Setting</td>
+          <td><button style="width: 84px" id="">?</button></td>
+        </tr>
+        <tr>
+          <td>Another Setting</td>
+          <td><button style="width: 84px" id="">?</button></td>
         </tr>
       </table>
 

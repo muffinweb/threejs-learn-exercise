@@ -35,7 +35,7 @@ const SimpleInitializer = (initialConfig: {
             // 2=Aspect Ratio 
             // 3= Min Distance Limit to show up objects on scene
             // 4= Max Distance Limit to show up objects on scene
-            const camera = await new THREE.PerspectiveCamera(60, width/height, initialConfig.near, initialConfig.far)
+            const camera = await new THREE.PerspectiveCamera(50, width/height, initialConfig.near, initialConfig.far)
         
             // Create new Scene
             const scene = await new THREE.Scene()
