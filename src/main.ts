@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { SimpleInitializer } from "./SimpleInitializer";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { AnimationMixer } from "three";
 
 const initialConfig = {
@@ -107,40 +107,75 @@ let mixer: THREE.AnimationMixer;
 //Color Changing
 (<HTMLInputElement>window.document.getElementById('colorPalette')).onchange = (ev: Event) => {
   let selectedColor = (<HTMLInputElement>ev.target).value;
-  boxColor = selectedColor
+  boxColor = selectedColor;
 }
 
 //Activate Orbit Controls Button Event
 (<HTMLButtonElement>document.querySelector('#activateOrbit')).addEventListener('click', () => {
   const orbits = new OrbitControls(sourcesByInstance.camera, sourcesByInstance.renderer.domElement)
-  orbits.update()
+  orbits.update();
   alert('Orbit controls activated. Mouse Controls Enabled')
 });
 
 (<HTMLButtonElement>document.querySelector('#load-old-pc')).addEventListener('click', async () => {
   //When Old PC object is chosen to review, background color turns to white
-  sourcesByInstance.renderer.setClearColor("#F5F5F5")
+  sourcesByInstance.renderer.setClearColor("#F5F5F5");
 
   //Model Loading
   const oldPcLoader =  new GLTFLoader();
+
   await oldPcLoader.loadAsync('/models/oldpc/scene.gltf').then(gltf => {
-
-
     mixer = new AnimationMixer( gltf.scene );
     const clip = gltf.animations[0];
 
-    console.log(clip)
+    sourcesByInstance.scene.add(gltf.scene);
+    mixer.clipAction(clip).play();
+
+    sourcesByInstance.resourceObjects.set('mixer', mixer);
+  })
+});
+
+(<HTMLButtonElement>document.querySelector('#load-medieval-book')).addEventListener('click', async () => {
+  //When Old PC object is chosen to review, background color turns to white
+  sourcesByInstance.renderer.setClearColor("#F5F5F5")
+
+  //Model Loading
+  const medieval_book =  new GLTFLoader();
+
+  await medieval_book.loadAsync('/models/medieval_book/scene.gltf').then(gltf => {
     
+    mixer = new AnimationMixer( gltf.scene );
+    const clip = gltf.animations[0];
 
     sourcesByInstance.scene.add(gltf.scene);
     mixer.clipAction(clip).play();    
 
     sourcesByInstance.resourceObjects.set('mixer', mixer);
+
+    const ambienLight = new THREE.AmbientLight();
+    sourcesByInstance.scene.add(ambienLight);
+    sourcesByInstance.renderer.setClearColor("#76c1ff");
+    ambienLight.position.y = 20;
+    ambienLight.rotateY(10);
+
   });
-  
+});
 
-  
 
+
+(<HTMLButtonElement>document.querySelector('#load-car')).addEventListener('click', async () => {
+  //When Old PC object is chosen to review, background color turns to white
+
+  //Model Loading
+  const polyCar =  new GLTFLoader();
+
+  await polyCar.loadAsync('/models/poly_car/scene.gltf').then(gltf => {
+  
+    sourcesByInstance.scene.add(gltf.scene);
+
+    gltf.scene.position.set(3,0,5)
+
+  });
 })
 
 
