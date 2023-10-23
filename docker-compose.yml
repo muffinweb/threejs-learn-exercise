@@ -1,0 +1,11 @@
+version: '3'
+services:
+  threejslearn:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4173:4173"
+    volumes:
+      # Allows changes made to project directory to be accessed by the container and persist.
+      - ./node_modules:/threejs/node_modules

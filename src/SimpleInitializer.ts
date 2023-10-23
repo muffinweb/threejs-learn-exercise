@@ -3,7 +3,6 @@
  */
 
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const SimpleInitializer = (initialConfig: {
     widthCanvas: number,
@@ -58,7 +57,7 @@ const SimpleInitializer = (initialConfig: {
         }, callback: FrameRequestCallback ) => {
 
             //Framer
-            const FrameInterval = setInterval(() => {
+             setInterval(() => {
                 requestAnimationFrame( callback );
                 sourcesByInstance.renderer.render( sourcesByInstance.scene, sourcesByInstance.camera );
             })

@@ -1,5 +1,5 @@
 
-This is self-guided project for learning/inspecting of how three.js works and how to learn it well
+This is self-taught/guided project for learning/inspecting of how three.js works, it's philosophy and how to learn it well
 
 ##
 

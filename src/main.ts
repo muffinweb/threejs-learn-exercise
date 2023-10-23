@@ -1,6 +1,8 @@
 import * as THREE from "three"
 import { SimpleInitializer } from "./SimpleInitializer";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { AnimationMixer } from "three";
 
 const initialConfig = {
   widthCanvas: 800,
@@ -15,8 +17,6 @@ const threeInstance = SimpleInitializer(initialConfig)
 
 let sourcesByInstance = await threeInstance.start((sources: any) => {
 
-        
-  
           //Geometry object + material = Meshable Object which is X Object
           const boxGeometry = new THREE.BoxGeometry()
           const material = new THREE.MeshPhongMaterial({color: "#FFAD00"})
@@ -82,19 +82,21 @@ let sourcesByInstance = await threeInstance.start((sources: any) => {
 
 //Action variables
 let spinningMode = true;
-let camMode = true; 
 
 let boxColor = '#FFAD00';
 
+//Spinning Toggle
 (<HTMLButtonElement>window.document.querySelector('#toggleSpin')).onclick = () => {
   spinningMode = !spinningMode
 }
 
+//Zoom In Button Event
 (<HTMLButtonElement>window.document.querySelector('#cameraZoomIn')).onclick = () => {
  
   sourcesByInstance.camera.position.z -= 1;
 }
 
+//Zoom Out Button Event
 (<HTMLButtonElement>window.document.querySelector('#cameraZoomOut')).onclick = () => {
   
   sourcesByInstance.camera.position.z += 1;
@@ -106,13 +108,33 @@ let boxColor = '#FFAD00';
   boxColor = selectedColor
 }
 
-(<HTMLButtonElement>document.querySelector('#activateOrbit')).addEventListener('click', ev => {
+//Activate Orbit Controls Button Event
+(<HTMLButtonElement>document.querySelector('#activateOrbit')).addEventListener('click', () => {
   const orbits = new OrbitControls(sourcesByInstance.camera, sourcesByInstance.renderer.domElement)
-  if(orbits.update()){
-    alert('Orbit controls activated');
-  }
-})
+  orbits.update()
+  alert('Orbit controls activated. Mouse Controls Enabled')
+});
 
+(<HTMLButtonElement>document.querySelector('#load-old-pc')).addEventListener('click', async () => {
+  sourcesByInstance.renderer.setClearColor("#F5F5F5")
+  const oldPcLoader =  new GLTFLoader();
+  const model = await oldPcLoader.loadAsync('/models/oldpc/scene.gltf').then(gltf => {
+
+    model;
+
+    const animMixer = new AnimationMixer(gltf.scene)
+    const animationAction = animMixer.clipAction((gltf as any).animations[0]).play()
+    animationAction.play()
+
+    sourcesByInstance.scene.add(gltf.scene);
+    gltf.scene.position.set( 0, -1, 1 )
+
+  });
+  
+
+  
+
+})
 
 
 
