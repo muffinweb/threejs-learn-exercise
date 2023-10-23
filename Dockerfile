@@ -10,4 +10,4 @@ EXPOSE 4173
 
 RUN npm run build
 
-CMD [ "npx", "vite", "preview", "--host", "0.0.0.0" ]
+CMD [ "npx", "vite", "preview", "--host", "0.0.0.0"]

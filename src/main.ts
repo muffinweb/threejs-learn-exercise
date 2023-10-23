@@ -136,7 +136,6 @@ let mixer: THREE.AnimationMixer;
 });
 
 (<HTMLButtonElement>document.querySelector('#load-medieval-book')).addEventListener('click', async () => {
-  //When Old PC object is chosen to review, background color turns to white
   sourcesByInstance.renderer.setClearColor("#F5F5F5")
 
   //Model Loading
@@ -164,8 +163,6 @@ let mixer: THREE.AnimationMixer;
 
 
 (<HTMLButtonElement>document.querySelector('#load-car')).addEventListener('click', async () => {
-  //When Old PC object is chosen to review, background color turns to white
-
   //Model Loading
   const polyCar =  new GLTFLoader();
 
@@ -174,6 +171,15 @@ let mixer: THREE.AnimationMixer;
     sourcesByInstance.scene.add(gltf.scene);
 
     gltf.scene.position.set(3,0,5)
+
+    const directionalLight = new THREE.DirectionalLight();
+    sourcesByInstance.scene.add(directionalLight);
+    
+     //const spotLightHelper = new THREE.DirectionalLightHelper(spotLight, 5, "#FFAD00");
+     //sourcesByInstance.scene.add(spotLightHelper);
+
+    directionalLight.color.set('#FFAD00')
+    directionalLight.position.set(5,2,5);
 
   });
 })
