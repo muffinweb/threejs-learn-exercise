@@ -3,7 +3,6 @@ import { SimpleInitializer } from "./SimpleInitializer";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { AnimationMixer } from "three";
-import { mix } from "three/examples/jsm/nodes/Nodes.js";
 
 const initialConfig = {
   widthCanvas: 800,
@@ -124,7 +123,7 @@ let mixer: THREE.AnimationMixer;
 
   //Model Loading
   const oldPcLoader =  new GLTFLoader();
-  const model = await oldPcLoader.loadAsync('/models/oldpc/scene.gltf').then(gltf => {
+  await oldPcLoader.loadAsync('/models/oldpc/scene.gltf').then(gltf => {
 
 
     mixer = new AnimationMixer( gltf.scene );
