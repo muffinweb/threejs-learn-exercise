@@ -1,7 +1,7 @@
 import * as THREE from "three"
 import { SimpleInitializer } from "./SimpleInitializer";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { AnimationMixer } from "three";
 
 const initialConfig = {
