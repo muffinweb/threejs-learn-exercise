@@ -3,6 +3,7 @@ import { SimpleInitializer } from "./SimpleInitializer";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { AnimationMixer } from "three";
+import { mix } from "three/examples/jsm/nodes/Nodes.js";
 
 const initialConfig = {
   widthCanvas: 800,
@@ -85,6 +86,8 @@ let spinningMode = true;
 
 let boxColor = '#FFAD00';
 
+let mixer: THREE.AnimationMixer;
+
 //Spinning Toggle
 (<HTMLButtonElement>window.document.querySelector('#toggleSpin')).onclick = () => {
   spinningMode = !spinningMode
@@ -116,19 +119,24 @@ let boxColor = '#FFAD00';
 });
 
 (<HTMLButtonElement>document.querySelector('#load-old-pc')).addEventListener('click', async () => {
+  //When Old PC object is chosen to review, background color turns to white
   sourcesByInstance.renderer.setClearColor("#F5F5F5")
+
+  //Model Loading
   const oldPcLoader =  new GLTFLoader();
   const model = await oldPcLoader.loadAsync('/models/oldpc/scene.gltf').then(gltf => {
 
-    model;
 
-    const animMixer = new AnimationMixer(gltf.scene)
-    const animationAction = animMixer.clipAction((gltf as any).animations[0]).play()
-    animationAction.play()
+    mixer = new AnimationMixer( gltf.scene );
+    const clip = gltf.animations[0];
+
+    console.log(clip)
+    
 
     sourcesByInstance.scene.add(gltf.scene);
-    gltf.scene.position.set( 0, -1, 1 )
+    mixer.clipAction(clip).play();    
 
+    sourcesByInstance.resourceObjects.set('mixer', mixer);
   });
   
 

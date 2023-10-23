@@ -54,11 +54,22 @@ const SimpleInitializer = (initialConfig: {
                     camera: THREE.PerspectiveCamera;
                     scene: THREE.Scene;
                     renderer: THREE.WebGLRenderer;
+                    resourceObjects: Map<any, any>
         }, callback: FrameRequestCallback ) => {
+
+            //Clock
+            const clock = new THREE.Clock();
 
             //Framer
              setInterval(() => {
                 requestAnimationFrame( callback );
+                
+                var delta = clock.getDelta();
+                if(sourcesByInstance.resourceObjects.get('mixer')){
+                    let mixer = sourcesByInstance.resourceObjects.get('mixer');
+                    mixer.update(delta)
+                }
+
                 sourcesByInstance.renderer.render( sourcesByInstance.scene, sourcesByInstance.camera );
             })
 
